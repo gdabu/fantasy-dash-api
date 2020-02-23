@@ -1,0 +1,27 @@
+{
+  "name": "fantasy-dash-api",
+  "version": "1.0.0",
+  "description": "Data api for Fantasy Dash",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gdabu/fantasy-dash-api.git"
+  },
+  "author": "Geoff Dabu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gdabu/fantasy-dash-api/issues"
+  },
+  "homepage": "https://github.com/gdabu/fantasy-dash-api#readme",
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
