@@ -52,7 +52,8 @@ const init = async () => {
               }
             }
           ]
-        },,{
+        },
+        {
           playerFirstName: "Lebron",
           playerLastName: "James",
           number: "23",
@@ -61,37 +62,38 @@ const init = async () => {
             {
               year: 2019,
               team: "LAL",
-              stats:{
+              stats: {
                 GAMES_PLAYED: 54,
                 POINTS: 1594,
-                  THREE_POINTS: 212,
-                  ASSISTS: 429,
-                  REOUNDS: 235,
-                  STEALS: 52,
-                  BLOCKS: 18,
-                  FIELD_GOAL_PCT: 46,
-                  FREE_THROW_PCT: 88.9,
-                  TURN_OVERS: 158
-                }
+                THREE_POINTS: 212,
+                ASSISTS: 429,
+                REOUNDS: 235,
+                STEALS: 52,
+                BLOCKS: 18,
+                FIELD_GOAL_PCT: 46,
+                FREE_THROW_PCT: 88.9,
+                TURN_OVERS: 158
+              }
             },
             {
               year: 2018,
               team: "LAL",
-              stats:{
+              stats: {
                 GAMES_PLAYED: 54,
                 POINTS: 1594,
-                  THREE_POINTS: 212,
-                  ASSISTS: 429,
-                  REOUNDS: 235,
-                  STEALS: 52,
-                  BLOCKS: 18,
-                  FIELD_GOAL_PCT: 46,
-                  FREE_THROW_PCT: 88.9,
-                  TURN_OVERS: 158
-                }
+                THREE_POINTS: 212,
+                ASSISTS: 429,
+                REOUNDS: 235,
+                STEALS: 52,
+                BLOCKS: 18,
+                FIELD_GOAL_PCT: 46,
+                FREE_THROW_PCT: 88.9,
+                TURN_OVERS: 158
+              }
             }
-          },
-          {
+          ]
+        },
+        {
           playerFirstName: "Giannis",
           playerLastName: "Antetokounmpo",
           number: "34",
@@ -100,36 +102,35 @@ const init = async () => {
             {
               year: 2019,
               team: "MIL",
-              stats:{
+              stats: {
                 GAMES_PLAYED: 54,
                 POINTS: 1594,
-                  THREE_POINTS: 212,
-                  ASSISTS: 429,
-                  REOUNDS: 235,
-                  STEALS: 52,
-                  BLOCKS: 18,
-                  FIELD_GOAL_PCT: 46,
-                  FREE_THROW_PCT: 88.9,
-                  TURN_OVERS: 158
-                }
+                THREE_POINTS: 212,
+                ASSISTS: 429,
+                REOUNDS: 235,
+                STEALS: 52,
+                BLOCKS: 18,
+                FIELD_GOAL_PCT: 46,
+                FREE_THROW_PCT: 88.9,
+                TURN_OVERS: 158
+              }
             },
             {
               year: 2018,
               team: "MIL",
-              stats:{
+              stats: {
                 GAMES_PLAYED: 54,
                 POINTS: 1594,
-                  THREE_POINTS: 212,
-                  ASSISTS: 429,
-                  REOUNDS: 235,
-                  STEALS: 52,
-                  BLOCKS: 18,
-                  FIELD_GOAL_PCT: 46,
-                  FREE_THROW_PCT: 88.9,
-                  TURN_OVERS: 158
-                }
+                THREE_POINTS: 212,
+                ASSISTS: 429,
+                REOUNDS: 235,
+                STEALS: 52,
+                BLOCKS: 18,
+                FIELD_GOAL_PCT: 46,
+                FREE_THROW_PCT: 88.9,
+                TURN_OVERS: 158
+              }
             }
-      
           ]
         }
       ];
