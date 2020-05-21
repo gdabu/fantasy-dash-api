@@ -27,7 +27,7 @@ const NHL_API = {
     });
   },
 
-  getRosters() {
+  getAllRosteredPlayers() {
     return new Promise((resolve, reject) => {
       axios
         .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster`)
@@ -47,40 +47,6 @@ const NHL_API = {
           resolve(allTeamRosters);
         })
         .catch((error) => reject(error));
-    });
-  },
-
-  async getAllRosteredPlayers() {
-    let allTeams = await this.getAllTeams();
-
-    // send an async request for every roster, and push the promises into a single array.
-    // each promise resolves an array of all players on that roster.
-    let teamsPromiseArray = allTeams.map((team) => {
-      return new Promise((resolve, reject) => {
-        this.getRoster(team.id)
-          .then((roster) => {
-            // add team info to the player object
-            roster.forEach((player) => {
-              player.currentTeam = { id: team.id, name: team.name, teamName: team.teamName };
-            });
-
-            resolve(roster);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    });
-
-    // once the all the roster promises are resolved, combine all the players into one array.
-    return await Promise.all(teamsPromiseArray).then((result) => {
-      let players = [];
-
-      result.forEach((element) => {
-        players.push(...element);
-      });
-
-      return players;
     });
   },
 

@@ -47,12 +47,6 @@ router.get('/getAllRosteredPlayers', async function (req, res) {
   res.json(result);
 });
 
-router.get('/getRosters', async function (req, res) {
-  let result = await NHL_API.getRosters();
-
-  res.json(result);
-});
-
 router.get('/getPlayerInfo/:playerId', async function (req, res) {
   let playerId = req.params.playerId;
 
