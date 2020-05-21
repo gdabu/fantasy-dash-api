@@ -84,11 +84,11 @@ const NHL_API = {
     });
   },
 
-  async getPlayer(playerId, season) {
-    return await Promise.all([
-      this.getPlayerInfo(playerId),
-      this.getPlayerStats(playerId, season),
-    ]).then((player) => {
+  getPlayer(playerId, season) {
+    let playerInfoPromise = this.getPlayerInfo(playerId);
+    let playerStatsPromise = this.getPlayerStats(playerId, season);
+
+    return Promise.all([playerInfoPromise, playerStatsPromise]).then((player) => {
       return Object.assign(...player);
     });
   },
