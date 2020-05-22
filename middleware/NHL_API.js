@@ -100,7 +100,6 @@ const NHL_API = {
           }
 
           let { season, stat } = stats.data.stats[0].splits[0];
-
           let seasonStats = {
             season: season,
             ...stat,

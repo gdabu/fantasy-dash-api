@@ -67,13 +67,13 @@ router.get('/getPlayerInfo/:playerId', async function (req, res) {
   }
 
   let result = await NHL_API.getPlayerInfo(playerId);
-
   res.json(result);
 });
 
 router.get('/getPlayerStats/:playerId/:season', async function (req, res) {
   let playerId = req.params.playerId;
   let season = req.params.season;
+
   if (typeof req.params.playerId == 'number') {
     res.status(400).json('400 - :playerId needs to be a number');
   }
@@ -82,13 +82,13 @@ router.get('/getPlayerStats/:playerId/:season', async function (req, res) {
   }
 
   let result = await NHL_API.getPlayerStats(playerId, season);
-
   res.json(result);
 });
 
 router.get('/getPlayer/:playerId/:season', async function (req, res) {
   let playerId = req.params.playerId;
   let season = req.params.season;
+
   if (typeof req.params.playerId == 'number') {
     res.status(400).json('400 - :playerId needs to be a number');
   }
@@ -97,7 +97,6 @@ router.get('/getPlayer/:playerId/:season', async function (req, res) {
   }
 
   let result = await NHL_API.getPlayer(playerId, season);
-
   res.json(result);
 });
 
