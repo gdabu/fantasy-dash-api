@@ -1,10 +1,10 @@
 const axios = require('axios').default;
 
 const NHL_API = {
-  getAllTeams() {
+  getAllTeams(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
-        .get('https://statsapi.web.nhl.com/api/v1/teams')
+        .get(`https://statsapi.web.nhl.com/api/v1/teams?season=${season}`)
         .then((result) => {
           resolve(result.data.teams);
         })
@@ -23,10 +23,10 @@ const NHL_API = {
     });
   },
 
-  getRoster(teamId) {
+  getRoster(teamId, season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster`)
+        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster?season=${season}`)
         .then((result) => {
           resolve(result.data.roster);
         })
@@ -34,10 +34,10 @@ const NHL_API = {
     });
   },
 
-  getAllRosteredPlayers() {
+  getAllRosteredPlayers(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster`)
+        .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster&season=${season}`)
         .then((result) => {
           let teams = result.data.teams;
           let allTeamRosters = [];
