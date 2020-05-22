@@ -1,10 +1,10 @@
 const axios = require('axios').default;
 
 const NHL_API = {
-  getAllTeams() {
+  getAllTeams(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
-        .get('https://statsapi.web.nhl.com/api/v1/teams')
+        .get(`https://statsapi.web.nhl.com/api/v1/teams?season=${season}`)
         .then((result) => {
           resolve(result.data.teams);
         })
@@ -12,14 +12,21 @@ const NHL_API = {
     });
   },
 
-  async getTeam(teamId) {
-    return this.getAllTeams().then((result) => result.find((team) => team.id == teamId));
-  },
-
-  getRoster(teamId) {
+  getTeam(teamId) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster`)
+        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}`)
+        .then((result) => {
+          resolve(result.data.teams[0]);
+        })
+        .catch((error) => reject(error));
+    });
+  },
+
+  getRoster(teamId, season = 20192020) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster?season=${season}`)
         .then((result) => {
           resolve(result.data.roster);
         })
@@ -27,27 +34,45 @@ const NHL_API = {
     });
   },
 
-  getAllRosteredPlayers() {
+  getAllRosteredPlayers(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
-        .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster`)
+        .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster&season=${season}`)
         .then((result) => {
           let teams = result.data.teams;
-          let allTeamRosters = [];
+          let allPlayers = [];
 
           teams.forEach((team) => {
             let singleTeamRoster = team.roster.roster;
             singleTeamRoster.forEach((player) => {
-              player.currentTeam = { id: team.id, name: team.name, teamName: team.teamName };
+              player.team = { id: team.id, name: team.name, teamName: team.teamName };
             });
 
-            allTeamRosters.push(...singleTeamRoster);
+            allPlayers.push(...singleTeamRoster);
           });
 
-          resolve(allTeamRosters);
+          resolve(allPlayers);
         })
         .catch((error) => reject(error));
     });
+  },
+
+  async getRosterPlayersFull(teamId, season = 20192020) {
+    let allPlayers = await this.getRoster(teamId, season);
+
+    let fullPlayerPromise = [];
+
+    allPlayers.forEach((player) => {
+      fullPlayerPromise.push(
+        new Promise((resolve, reject) => {
+          this.getPlayer(player.person.id, season)
+            .then((fullPlayer) => resolve(fullPlayer))
+            .catch((error) => reject(error));
+        }).catch((error) => console.log(error))
+      );
+    });
+
+    return Promise.all(fullPlayerPromise);
   },
 
   getPlayerInfo(playerId) {
@@ -68,6 +93,12 @@ const NHL_API = {
           `https://statsapi.web.nhl.com/api/v1/people/${playerId}/stats?stats=statsSingleSeason&season=${season}`
         )
         .then((stats) => {
+          // Check for empty stats
+          if (stats.data.stats[0].splits[0] === undefined) {
+            resolve({ stats: [] });
+            return;
+          }
+
           let { season, stat } = stats.data.stats[0].splits[0];
 
           let seasonStats = {
@@ -75,7 +106,6 @@ const NHL_API = {
             ...stat,
           };
 
-          // add player id to resolved player stat object
           resolve({
             stats: [seasonStats],
           });
@@ -84,12 +114,12 @@ const NHL_API = {
     });
   },
 
-  async getPlayer(playerId, season) {
-    return await Promise.all([
-      this.getPlayerInfo(playerId),
-      this.getPlayerStats(playerId, season),
-    ]).then((player) => {
-      return Object.assign(...player);
+  getPlayer(playerId, season) {
+    let playerInfoPromise = this.getPlayerInfo(playerId);
+    let playerStatsPromise = this.getPlayerStats(playerId, season);
+
+    return Promise.all([playerInfoPromise, playerStatsPromise]).then((player) => {
+      return Object.assign({}, ...player);
     });
   },
 };

@@ -27,7 +27,7 @@ router.get('/getTeam/:teamId', async function (req, res) {
     res.status(400).json('404 - team not found');
   }
 
-  res.json(result[0]);
+  res.json(result);
 });
 
 router.get('/getRoster/:teamId', async function (req, res) {
@@ -44,6 +44,18 @@ router.get('/getRoster/:teamId', async function (req, res) {
 
 router.get('/getAllRosteredPlayers', async function (req, res) {
   let result = await NHL_API.getAllRosteredPlayers();
+  res.json(result);
+});
+
+router.get('/getRosterPlayersFull/:teamId', async function (req, res) {
+  let teamId = req.params.teamId;
+
+  if (isNaN(teamId)) {
+    res.status(400).json('400 - :teamId needs to be a number');
+    return;
+  }
+
+  let result = await NHL_API.getRosterPlayersFull(teamId);
   res.json(result);
 });
 
