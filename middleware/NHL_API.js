@@ -93,6 +93,12 @@ const NHL_API = {
           `https://statsapi.web.nhl.com/api/v1/people/${playerId}/stats?stats=statsSingleSeason&season=${season}`
         )
         .then((stats) => {
+          // Check for empty stats
+          if (stats.data.stats[0].splits[0] === undefined) {
+            resolve({ stats: [] });
+            return;
+          }
+
           let { season, stat } = stats.data.stats[0].splits[0];
 
           let seasonStats = {
