@@ -106,7 +106,6 @@ const NHL_API = {
             ...stat,
           };
 
-          // add player id to resolved player stat object
           resolve({
             stats: [seasonStats],
           });
