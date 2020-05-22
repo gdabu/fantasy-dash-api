@@ -45,7 +45,7 @@ const NHL_API = {
           teams.forEach((team) => {
             let singleTeamRoster = team.roster.roster;
             singleTeamRoster.forEach((player) => {
-              player.currentTeam = { id: team.id, name: team.name, teamName: team.teamName };
+              player.team = { id: team.id, name: team.name, teamName: team.teamName };
             });
 
             allTeamRosters.push(...singleTeamRoster);
