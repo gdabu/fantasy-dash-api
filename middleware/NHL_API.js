@@ -57,6 +57,24 @@ const NHL_API = {
     });
   },
 
+  async getRosterPlayersFull(teamId, season = 20192020) {
+    let allPlayers = await this.getRoster(teamId, season);
+
+    let fullPlayerPromise = [];
+
+    allPlayers.forEach((player) => {
+      fullPlayerPromise.push(
+        new Promise((resolve, reject) => {
+          this.getPlayer(player.person.id, season)
+            .then((fullPlayer) => resolve(fullPlayer))
+            .catch((error) => reject(error));
+        }).catch((error) => console.log(error))
+      );
+    });
+
+    return Promise.all(fullPlayerPromise);
+  },
+
   getPlayerInfo(playerId) {
     return new Promise((resolve, reject) => {
       axios
