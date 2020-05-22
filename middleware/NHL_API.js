@@ -119,7 +119,7 @@ const NHL_API = {
     let playerStatsPromise = this.getPlayerStats(playerId, season);
 
     return Promise.all([playerInfoPromise, playerStatsPromise]).then((player) => {
-      return Object.assign(...player);
+      return Object.assign({}, ...player);
     });
   },
 };
