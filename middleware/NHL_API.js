@@ -40,7 +40,7 @@ const NHL_API = {
         .get(`https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster&season=${season}`)
         .then((result) => {
           let teams = result.data.teams;
-          let allTeamRosters = [];
+          let allPlayers = [];
 
           teams.forEach((team) => {
             let singleTeamRoster = team.roster.roster;
@@ -48,10 +48,10 @@ const NHL_API = {
               player.team = { id: team.id, name: team.name, teamName: team.teamName };
             });
 
-            allTeamRosters.push(...singleTeamRoster);
+            allPlayers.push(...singleTeamRoster);
           });
 
-          resolve(allTeamRosters);
+          resolve(allPlayers);
         })
         .catch((error) => reject(error));
     });
