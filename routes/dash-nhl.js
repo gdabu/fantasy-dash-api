@@ -27,7 +27,7 @@ router.get('/getTeam/:teamId', async function (req, res) {
     res.status(400).json('404 - team not found');
   }
 
-  res.json(result[0]);
+  res.json(result);
 });
 
 router.get('/getRoster/:teamId', async function (req, res) {

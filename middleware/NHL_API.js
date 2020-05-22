@@ -12,8 +12,15 @@ const NHL_API = {
     });
   },
 
-  async getTeam(teamId) {
-    return this.getAllTeams().then((result) => result.find((team) => team.id == teamId));
+  getTeam(teamId) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}`)
+        .then((result) => {
+          resolve(result.data.teams[0]);
+        })
+        .catch((error) => reject(error));
+    });
   },
 
   getRoster(teamId) {
