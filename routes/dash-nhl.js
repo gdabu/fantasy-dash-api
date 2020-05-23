@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const NHL_API = require('../middleware/NHL_API.js');
+const NHL_API = require('../connectors/NHL_API.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
