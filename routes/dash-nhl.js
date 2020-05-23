@@ -9,12 +9,26 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/getAllTeams', async function (req, res) {
-  let result = await NHL_API.getAllTeams();
-  res.json(result);
+  let { season } = req.query;
+
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
+  }
+
+  let { status, payload } = await NHL_API.getAllTeams(season);
+  res.status(status).json(payload);
 });
 
-router.get('/getTeam/:teamId', async function (req, res) {
-  let teamId = req.params.teamId;
+router.get('/getTeam', async function (req, res) {
+  let { teamId } = req.query;
+
+  if (teamId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
+  }
 
   if (isNaN(teamId)) {
     res.status(400).json('400 - :teamId needs to be a number');
@@ -30,11 +44,24 @@ router.get('/getTeam/:teamId', async function (req, res) {
   res.json(result);
 });
 
-router.get('/getRoster/:teamId', async function (req, res) {
-  let teamId = req.params.teamId;
+router.get('/getRoster', async function (req, res) {
+  let { teamId, season } = req.query;
 
-  if (typeof req.params.teamId == 'number') {
+  if (teamId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
+  }
+
+  if (isNaN(teamId)) {
     res.status(400).json('400 - :teamId needs to be a number');
+    return;
+  }
+
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
   }
 
   let result = await NHL_API.getRoster(teamId);
@@ -43,57 +70,102 @@ router.get('/getRoster/:teamId', async function (req, res) {
 });
 
 router.get('/getAllRosteredPlayers', async function (req, res) {
-  let result = await NHL_API.getAllRosteredPlayers();
+  let { season } = req.query;
+
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
+  }
+
+  let result = await NHL_API.getAllRosteredPlayers(season);
   res.json(result);
 });
 
-router.get('/getRosterPlayersFull/:teamId', async function (req, res) {
-  let teamId = req.params.teamId;
+router.get('/getRosterPlayersFull', async function (req, res) {
+  let { teamId, season } = req.query;
+
+  if (teamId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
+  }
 
   if (isNaN(teamId)) {
     res.status(400).json('400 - :teamId needs to be a number');
     return;
   }
 
-  let result = await NHL_API.getRosterPlayersFull(teamId);
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
+  }
+
+  let result = await NHL_API.getRosterPlayersFull(teamId, season);
   res.json(result);
 });
 
-router.get('/getPlayerInfo/:playerId', async function (req, res) {
-  let playerId = req.params.playerId;
+router.get('/getPlayerInfo', async function (req, res) {
+  let { playerId } = req.query;
 
-  if (typeof req.params.playerId == 'number') {
-    res.status(400).json('400 - :playerId needs to be a number');
+  if (playerId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
+  }
+
+  if (isNaN(playerId)) {
+    res.status(400).json('400 - :teamId needs to be a number');
+    return;
   }
 
   let result = await NHL_API.getPlayerInfo(playerId);
   res.json(result);
 });
 
-router.get('/getPlayerStats/:playerId/:season', async function (req, res) {
-  let playerId = req.params.playerId;
-  let season = req.params.season;
+router.get('/getPlayerStats', async function (req, res) {
+  let { teamId, season } = req.query;
 
-  if (typeof req.params.playerId == 'number') {
-    res.status(400).json('400 - :playerId needs to be a number');
+  if (teamId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
   }
-  if (typeof req.params.season == 'number') {
-    res.status(400).json('400 - :season needs to be a number');
+
+  if (isNaN(teamId)) {
+    res.status(400).json('400 - :teamId needs to be a number');
+    return;
+  }
+
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
   }
 
   let result = await NHL_API.getPlayerStats(playerId, season);
   res.json(result);
 });
 
-router.get('/getPlayer/:playerId/:season', async function (req, res) {
-  let playerId = req.params.playerId;
-  let season = req.params.season;
+router.get('/getPlayer', async function (req, res) {
+  let { teamId, season } = req.query;
 
-  if (typeof req.params.playerId == 'number') {
-    res.status(400).json('400 - :playerId needs to be a number');
+  if (teamId === undefined) {
+    res.status(400).json(`400 - :teamId can't be empty`);
+    return;
   }
-  if (typeof req.params.season == 'number') {
-    res.status(400).json('400 - :season needs to be a number');
+
+  if (isNaN(teamId)) {
+    res.status(400).json('400 - :teamId needs to be a number');
+    return;
+  }
+
+  if (season !== undefined && !RegExp('\\d{8}').test(season)) {
+    res
+      .status(400)
+      .json('400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)');
+    return;
   }
 
   let result = await NHL_API.getPlayer(playerId, season);

@@ -1,14 +1,22 @@
 const axios = require('axios').default;
 
+// axios.interceptors.request.use((request) => {
+//   console.log('Starting Request', request.url);
+//   return request;
+// });
+
 const NHL_API = {
   getAllTeams(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
         .get(`https://statsapi.web.nhl.com/api/v1/teams?season=${season}`)
         .then((result) => {
-          resolve(result.data.teams);
+          resolve({ status: 200, payload: result.data.teams });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+          resolve({ status, payload: `${status} - ${statusText}` });
+        });
     });
   },
 
