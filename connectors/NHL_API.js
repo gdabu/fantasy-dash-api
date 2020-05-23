@@ -15,7 +15,7 @@ const NHL_API = {
         })
         .catch((error) => {
           let { status, statusText } = error.response;
-          resolve({ status, payload: `${status} - ${statusText}` });
+          reject({ status, payload: `${status} - ${statusText}` });
         });
     });
   },
@@ -25,9 +25,12 @@ const NHL_API = {
       axios
         .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}`)
         .then((result) => {
-          resolve(result.data.teams[0]);
+          resolve({ status: 200, payload: result.data.teams[0] });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+          reject({ status, payload: `${status} - ${statusText}` });
+        });
     });
   },
 
@@ -36,9 +39,12 @@ const NHL_API = {
       axios
         .get(`https://statsapi.web.nhl.com/api/v1/teams/${teamId}/roster?season=${season}`)
         .then((result) => {
-          resolve(result.data.roster);
+          resolve({ status: 200, payload: result.data.roster });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+          reject({ status, payload: `${status} - ${statusText}` });
+        });
     });
   },
 
@@ -59,42 +65,30 @@ const NHL_API = {
             allPlayers.push(...singleTeamRoster);
           });
 
-          resolve(allPlayers);
+          resolve({ status: 200, payload: allPlayers });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+          reject({ status, payload: `${status} - ${statusText}` });
+        });
     });
-  },
-
-  async getRosterPlayersFull(teamId, season = 20192020) {
-    let allPlayers = await this.getRoster(teamId, season);
-
-    let fullPlayerPromise = [];
-
-    allPlayers.forEach((player) => {
-      fullPlayerPromise.push(
-        new Promise((resolve, reject) => {
-          this.getPlayer(player.person.id, season)
-            .then((fullPlayer) => resolve(fullPlayer))
-            .catch((error) => reject(error));
-        }).catch((error) => console.log(error))
-      );
-    });
-
-    return Promise.all(fullPlayerPromise);
   },
 
   getPlayerInfo(playerId) {
     return new Promise((resolve, reject) => {
       axios
         .get(`https://statsapi.web.nhl.com/api/v1/people/${playerId}`)
-        .then((player) => {
-          resolve(player.data.people[0]);
+        .then((result) => {
+          resolve({ status: 200, payload: result.data.people[0] });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+          reject({ status, payload: `${status} - ${statusText}` });
+        });
     });
   },
 
-  getPlayerStats(playerId, season) {
+  getPlayerStats(playerId, season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
         .get(
@@ -103,7 +97,12 @@ const NHL_API = {
         .then((stats) => {
           // Check for empty stats
           if (stats.data.stats[0].splits[0] === undefined) {
-            resolve({ stats: [] });
+            resolve({
+              status: 200,
+              payload: {
+                stats: [],
+              },
+            });
             return;
           }
 
@@ -114,20 +113,80 @@ const NHL_API = {
           };
 
           resolve({
-            stats: [seasonStats],
+            status: 200,
+            payload: {
+              stats: [seasonStats],
+            },
           });
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          let { status, statusText } = error.response;
+
+          if (status === 500) {
+            status = 404;
+            statusText = 'Not Found';
+          }
+
+          reject({ status, payload: `${status} - ${statusText}` });
+        });
     });
   },
 
   getPlayer(playerId, season) {
-    let playerInfoPromise = this.getPlayerInfo(playerId);
-    let playerStatsPromise = this.getPlayerStats(playerId, season);
+    return new Promise((resolve, reject) => {
+      let playerInfoPromise = this.getPlayerInfo(playerId);
+      let playerStatsPromise = this.getPlayerStats(playerId, season);
 
-    return Promise.all([playerInfoPromise, playerStatsPromise]).then((player) => {
-      return Object.assign({}, ...player);
+      Promise.all([playerInfoPromise, playerStatsPromise])
+        .then((result) => {
+          let playerDetails = result.map((playerDetail) => {
+            return playerDetail.payload;
+          });
+
+          resolve({ status: 200, payload: Object.assign({}, ...playerDetails) });
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
+  },
+
+  async getRosterPlayersFull(teamId, season = 20192020) {
+    let allPlayers = await this.getRoster(teamId, season)
+      .then((result) => {
+        return result.payload;
+      })
+      .catch((error) => {
+        throw error;
+      });
+
+    let fullPlayerPromise = [];
+
+    allPlayers.forEach((player) => {
+      fullPlayerPromise.push(
+        new Promise(async (resolve, reject) => {
+          this.getPlayer(player.person.id, season)
+            .then((result) => {
+              resolve(result);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
+      );
+    });
+
+    return Promise.all(fullPlayerPromise)
+      .then((result) => {
+        let playerDetails = result.map((playerDetail) => {
+          return playerDetail.payload;
+        });
+
+        return { status: 200, payload: playerDetails };
+      })
+      .catch((error) => {
+        return error;
+      });
   },
 };
 

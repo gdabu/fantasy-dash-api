@@ -18,7 +18,9 @@ router.get('/getAllTeams', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getAllTeams(season);
+  let { status, payload } = await NHL_API.getAllTeams(season).catch((error) => {
+    return error;
+  });
   res.status(status).json(payload);
 });
 
@@ -35,13 +37,10 @@ router.get('/getTeam', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getTeam(teamId);
-
-  if (result.length === 0) {
-    res.status(400).json('404 - team not found');
-  }
-
-  res.json(result);
+  let { status, payload } = await NHL_API.getTeam(teamId).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getRoster', async function (req, res) {
@@ -64,9 +63,10 @@ router.get('/getRoster', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getRoster(teamId);
-
-  res.json(result);
+  let { status, payload } = await NHL_API.getRoster(teamId, season).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getAllRosteredPlayers', async function (req, res) {
@@ -79,8 +79,10 @@ router.get('/getAllRosteredPlayers', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getAllRosteredPlayers(season);
-  res.json(result);
+  let { status, payload } = await NHL_API.getAllRosteredPlayers(season).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getRosterPlayersFull', async function (req, res) {
@@ -103,37 +105,41 @@ router.get('/getRosterPlayersFull', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getRosterPlayersFull(teamId, season);
-  res.json(result);
+  let { status, payload } = await NHL_API.getRosterPlayersFull(teamId, season).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getPlayerInfo', async function (req, res) {
   let { playerId } = req.query;
 
   if (playerId === undefined) {
-    res.status(400).json(`400 - :teamId can't be empty`);
+    res.status(400).json(`400 - :playerId can't be empty`);
     return;
   }
 
   if (isNaN(playerId)) {
-    res.status(400).json('400 - :teamId needs to be a number');
+    res.status(400).json('400 - :playerId needs to be a number');
     return;
   }
 
-  let result = await NHL_API.getPlayerInfo(playerId);
-  res.json(result);
+  let { status, payload } = await NHL_API.getPlayerInfo(playerId).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getPlayerStats', async function (req, res) {
-  let { teamId, season } = req.query;
+  let { playerId, season } = req.query;
 
-  if (teamId === undefined) {
-    res.status(400).json(`400 - :teamId can't be empty`);
+  if (playerId === undefined) {
+    res.status(400).json(`400 - :playerId can't be empty`);
     return;
   }
 
-  if (isNaN(teamId)) {
-    res.status(400).json('400 - :teamId needs to be a number');
+  if (isNaN(playerId)) {
+    res.status(400).json('400 - :playerId needs to be a number');
     return;
   }
 
@@ -144,20 +150,22 @@ router.get('/getPlayerStats', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getPlayerStats(playerId, season);
-  res.json(result);
+  let { status, payload } = await NHL_API.getPlayerStats(playerId, season).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 router.get('/getPlayer', async function (req, res) {
-  let { teamId, season } = req.query;
+  let { playerId, season } = req.query;
 
-  if (teamId === undefined) {
-    res.status(400).json(`400 - :teamId can't be empty`);
+  if (playerId === undefined) {
+    res.status(400).json(`400 - :playerId can't be empty`);
     return;
   }
 
-  if (isNaN(teamId)) {
-    res.status(400).json('400 - :teamId needs to be a number');
+  if (isNaN(playerId)) {
+    res.status(400).json('400 - :playerId needs to be a number');
     return;
   }
 
@@ -168,8 +176,10 @@ router.get('/getPlayer', async function (req, res) {
     return;
   }
 
-  let result = await NHL_API.getPlayer(playerId, season);
-  res.json(result);
+  let { status, payload } = await NHL_API.getPlayer(playerId, season).catch((error) => {
+    return error;
+  });
+  res.status(status).json(payload);
 });
 
 module.exports = router;
