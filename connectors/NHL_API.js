@@ -1,11 +1,21 @@
 const axios = require('axios').default;
 
-// axios.interceptors.request.use((request) => {
-//   console.log('Starting Request', request.url);
-//   return request;
-// });
-
+/**
+ * NHL_API
+ * Connector functions for making REST requests to the NHL Stats API
+ * @api https://statsapi.web.nhl.com/
+ *
+ * Each connector function returns a promise that resolves/rejects
+ * an object with 2 properties:
+ * @returnObjectProperty status (http status code)
+ * @returnObjectProperty payload
+ */
 const NHL_API = {
+  /**
+   * getAllTeams(season)
+   * Gets a list of all teams currently in the league.
+   * @param season (default 20192020)
+   */
   getAllTeams(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
@@ -20,6 +30,11 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getTeam(teamId)
+   * Gets a specified team.
+   * @queryparam teamId (Required)
+   */
   getTeam(teamId) {
     return new Promise((resolve, reject) => {
       axios
@@ -34,6 +49,12 @@ const NHL_API = {
     });
   },
 
+  /**
+   * /getRoster
+   * Gets a list of all the players of a specified team for a specified season.
+   * @queryparam teamId (Required)
+   * @queryparam season
+   */
   getRoster(teamId, season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
@@ -48,6 +69,11 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getAllRosteredPlayers(season)
+   * Gets a list of all players who were on any team roster for a specified season.
+   * @param season
+   */
   getAllRosteredPlayers(season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
@@ -74,6 +100,11 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getPlayerInfo(playerId)
+   * Gets the full info list of a specified player
+   * @param playerId (Required)
+   */
   getPlayerInfo(playerId) {
     return new Promise((resolve, reject) => {
       axios
@@ -88,6 +119,12 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getPlayerStats(playerId, season)
+   * Gets the stats of a specified player for a specified season
+   * @param playerId (Required)
+   * @param season
+   */
   getPlayerStats(playerId, season = 20192020) {
     return new Promise((resolve, reject) => {
       axios
@@ -132,6 +169,12 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getPlayer(playerId, season)
+   * Gets the full info list of a specified player, and their stats for the specified season.
+   * @param playerId (Required)
+   * @param season
+   */
   getPlayer(playerId, season) {
     return new Promise((resolve, reject) => {
       let playerInfoPromise = this.getPlayerInfo(playerId);
@@ -151,6 +194,16 @@ const NHL_API = {
     });
   },
 
+  /**
+   * getRosterPlayersFull(teamId, season)
+   * Gets a list of all players who were on a specified team for a specified season. The players full information and
+   * stats for the specified season will be included.
+   * @param teamId (Required)
+   * @param season
+   *
+   * TODO: return a promise object so that its consistent with the rest of the connector function
+   *
+   */
   async getRosterPlayersFull(teamId, season = 20192020) {
     let allPlayers = await this.getRoster(teamId, season)
       .then((result) => {
