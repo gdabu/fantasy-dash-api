@@ -4,6 +4,15 @@ const request = supertest(app);
 
 const league = 'nhl';
 
+describe('/', () => {
+  it('/', async (done) => {
+    const response = await request.get('/');
+    expect(response.status).toBe(200);
+    expect(response.header['content-type']).toBe('text/html; charset=utf-8');
+    done();
+  });
+});
+
 describe('/nhl/getAllTeams', () => {
   it('/', async (done) => {
     const response = await request.get('/nhl/getAllTeams');
