@@ -201,7 +201,6 @@ const NHL_API = {
    * @param teamId (Required)
    * @param season
    *
-   * TODO: return a promise object so that its consistent with the rest of the connector function
    *
    */
   async getRosterPlayersFull(teamId, season = 20192020) {
@@ -229,7 +228,7 @@ const NHL_API = {
       );
     });
 
-    return Promise.all(fullPlayerPromise)
+    return await Promise.all(fullPlayerPromise)
       .then((result) => {
         let playerDetails = result.map((playerDetail) => {
           return playerDetail.payload;
