@@ -216,7 +216,7 @@ const NHL_API = {
 
     allPlayers.forEach((player) => {
       fullPlayerPromise.push(
-        new Promise(async (resolve, reject) => {
+        new Promise((resolve, reject) => {
           this.getPlayer(player.person.id, season)
             .then((result) => {
               resolve(result);
