@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var dashNhlRouter = require('./routes/dash-nhl');
+var dashNhlRouter = require('./routes/nhl-stats');
 
 var app = express();
 
