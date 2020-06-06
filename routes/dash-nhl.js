@@ -15,6 +15,7 @@ router.get('/', function (req, res, next) {
 router.get('/getAllTeams', async function (req, res) {
   let { season } = req.query;
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
@@ -71,6 +72,7 @@ router.get('/getRoster', async function (req, res) {
     return;
   }
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
@@ -92,6 +94,7 @@ router.get('/getRoster', async function (req, res) {
 router.get('/getAllRosteredPlayers', async function (req, res) {
   let { season } = req.query;
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
@@ -148,6 +151,7 @@ router.get('/getPlayerStats', async function (req, res) {
     return;
   }
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
@@ -180,6 +184,7 @@ router.get('/getPlayer', async function (req, res) {
     return;
   }
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
@@ -213,6 +218,7 @@ router.get('/getRosterPlayersFull', async function (req, res) {
     return;
   }
 
+  // regex validation for proper YYYYYYYY format
   if (season !== undefined && !RegExp('\\d{8}').test(season)) {
     res
       .status(400)
