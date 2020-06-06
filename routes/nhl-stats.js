@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 
-const NHL_API = require('../connectors/NHL_API.js');
+const NHL_STATS_API = require('../connectors/connector-nhl-stats-api.js');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -23,7 +23,7 @@ router.get('/getAllTeams', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getAllTeams(season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getAllTeams(season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -47,7 +47,7 @@ router.get('/getTeam', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getTeam(teamId).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getTeam(teamId).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -80,7 +80,7 @@ router.get('/getRoster', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getRoster(teamId, season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getRoster(teamId, season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -102,7 +102,7 @@ router.get('/getAllRosteredPlayers', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getAllRosteredPlayers(season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getAllRosteredPlayers(season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -126,7 +126,7 @@ router.get('/getPlayerInfo', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getPlayerInfo(playerId).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getPlayerInfo(playerId).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -159,7 +159,7 @@ router.get('/getPlayerStats', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getPlayerStats(playerId, season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getPlayerStats(playerId, season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -192,7 +192,7 @@ router.get('/getPlayer', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getPlayer(playerId, season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getPlayer(playerId, season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
@@ -226,9 +226,11 @@ router.get('/getRosterPlayersFull', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_API.getRosterPlayersFull(teamId, season).catch((error) => {
-    return error;
-  });
+  let { status, payload } = await NHL_STATS_API.getRosterPlayersFull(teamId, season).catch(
+    (error) => {
+      return error;
+    }
+  );
   res.status(status).json(payload);
 });
 

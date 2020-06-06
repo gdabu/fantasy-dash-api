@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 
 /**
- * NHL_API
+ * NHL_STATS_API
  * Connector functions for making REST requests to the NHL Stats API
  * @api https://statsapi.web.nhl.com/
  *
@@ -10,7 +10,7 @@ const axios = require('axios').default;
  * @returnObjectProperty status (http status code)
  * @returnObjectProperty payload
  */
-const NHL_API = {
+const NHL_STATS_API = {
   /**
    * getAllTeams(season)
    * Gets a list of all teams currently in the league.
@@ -242,4 +242,4 @@ const NHL_API = {
   },
 };
 
-module.exports = NHL_API;
+module.exports = NHL_STATS_API;
