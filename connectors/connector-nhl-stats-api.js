@@ -204,6 +204,7 @@ const NHL_STATS_API = {
    *
    */
   async getRosterPlayersFull(teamId, season = 20192020) {
+    // 1. get all players on a specified roster
     let allPlayers = await this.getRoster(teamId, season)
       .then((result) => {
         return result.payload;
@@ -214,6 +215,7 @@ const NHL_STATS_API = {
 
     let fullPlayerPromise = [];
 
+    // 2. get every player (stats & details) on roster
     allPlayers.forEach((player) => {
       fullPlayerPromise.push(
         new Promise((resolve, reject) => {
@@ -228,6 +230,7 @@ const NHL_STATS_API = {
       );
     });
 
+    // 3. wait for all player requests to resolve and return
     return await Promise.all(fullPlayerPromise)
       .then((result) => {
         let playerFull = result.map((playerDetail) => {
