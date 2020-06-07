@@ -137,7 +137,7 @@ const NHL_STATS_API = {
             resolve({
               status: 200,
               payload: {
-                stats: [],
+                stats: [{ season: season }],
               },
             });
             return;

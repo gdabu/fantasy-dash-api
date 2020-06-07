@@ -209,7 +209,7 @@ describe('/nhl/getPlayerStats', () => {
   it('?playerId=8471239&season=10001001', async (done) => {
     const response = await request.get('/nhl/getPlayerStats?playerId=8471239&season=20002001');
     expect(response.status).toBe(200);
-    expect(response.body.stats.length).toBe(0);
+    expect(response.body.stats.length).toBe(1);
     done();
   });
 });
@@ -293,7 +293,7 @@ describe('/nhl/getPlayerFull', () => {
   it('?playerId=8471239&season=10001001', async (done) => {
     const response = await request.get('/nhl/getPlayerFull?playerId=8471239&season=20002001');
     expect(response.status).toBe(200);
-    expect(response.body.stats.length).toBe(0);
+    expect(response.body.stats.length).toBe(1);
     done();
   });
 });
