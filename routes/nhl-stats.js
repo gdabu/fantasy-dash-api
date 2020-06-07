@@ -137,9 +137,10 @@ router.get('/getPlayerInfo', async function (req, res) {
  * Gets the stats of a specified player for a specified season
  * @queryparam playerId (Required)
  * @queryparam season
+ * @queryparam statType
  */
 router.get('/getPlayerStats', async function (req, res) {
-  let { playerId, season } = req.query;
+  let { playerId, season, statType } = req.query;
 
   if (playerId === undefined) {
     res.status(400).json(`400 - :playerId can't be empty`);
@@ -159,9 +160,11 @@ router.get('/getPlayerStats', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_STATS_API.getPlayerStats(playerId, season).catch((error) => {
-    return error;
-  });
+  let { status, payload } = await NHL_STATS_API.getPlayerStats(playerId, season, statType).catch(
+    (error) => {
+      return error;
+    }
+  );
   res.status(status).json(payload);
 });
 
@@ -170,9 +173,10 @@ router.get('/getPlayerStats', async function (req, res) {
  * Gets the full info list of a specified player, and their stats for the specified season.
  * @queryparam playerId (Required)
  * @queryparam season
+ * @queryparam statType
  */
 router.get('/getPlayerFull', async function (req, res) {
-  let { playerId, season } = req.query;
+  let { playerId, season, statType } = req.query;
 
   if (playerId === undefined) {
     res.status(400).json(`400 - :playerId can't be empty`);
@@ -192,9 +196,11 @@ router.get('/getPlayerFull', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_STATS_API.getPlayerFull(playerId, season).catch((error) => {
-    return error;
-  });
+  let { status, payload } = await NHL_STATS_API.getPlayerFull(playerId, season, statType).catch(
+    (error) => {
+      return error;
+    }
+  );
   res.status(status).json(payload);
 });
 

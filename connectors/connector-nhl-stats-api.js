@@ -125,7 +125,7 @@ const NHL_STATS_API = {
    * @param playerId (Required)
    * @param season
    */
-  getPlayerStats(playerId, season = 20192020) {
+  getPlayerStats(playerId, season = 20192020, statType) {
     return new Promise((resolve, reject) => {
       axios
         .get(
@@ -143,7 +143,13 @@ const NHL_STATS_API = {
             return;
           }
 
-          let { season, stat } = stats.data.stats[0].splits[0];
+          let { stat } = stats.data.stats[0].splits[0];
+
+          // if statType is specified return stats with the single statType
+          if (statType !== undefined) {
+            stat = { [statType]: stat[statType] };
+          }
+
           let seasonStats = {
             season: season,
             ...stat,
@@ -174,11 +180,12 @@ const NHL_STATS_API = {
    * Gets the full info list of a specified player, and their stats for the specified season.
    * @param playerId (Required)
    * @param season
+   * @param statType
    */
-  getPlayerFull(playerId, season) {
+  getPlayerFull(playerId, season, statType) {
     return new Promise((resolve, reject) => {
       let playerInfoPromise = this.getPlayerInfo(playerId);
-      let playerStatsPromise = this.getPlayerStats(playerId, season);
+      let playerStatsPromise = this.getPlayerStats(playerId, season, statType);
 
       Promise.all([playerInfoPromise, playerStatsPromise])
         .then((result) => {
@@ -200,10 +207,10 @@ const NHL_STATS_API = {
    * stats for the specified season will be included.
    * @param teamId (Required)
    * @param season
-   *
+   * @param statType
    *
    */
-  async getRosterPlayersFull(teamId, season = 20192020) {
+  async getRosterPlayersFull(teamId, season = 20192020, statType) {
     // 1. get all players on a specified roster
     let allPlayers = await this.getRoster(teamId, season)
       .then((result) => {
@@ -219,7 +226,7 @@ const NHL_STATS_API = {
     allPlayers.forEach((player) => {
       fullPlayerPromise.push(
         new Promise((resolve, reject) => {
-          this.getPlayerFull(player.person.id, season)
+          this.getPlayerFull(player.person.id, season, statType)
             .then((result) => {
               resolve(result);
             })
