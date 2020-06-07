@@ -244,37 +244,37 @@ describe('/nhl/getPlayerInfo', () => {
   });
 });
 
-describe('/nhl/getPlayer', () => {
+describe('/nhl/getPlayerFull', () => {
   it('/', async (done) => {
-    const response = await request.get('/nhl/getPlayer');
+    const response = await request.get('/nhl/getPlayerFull');
     expect(response.status).toBe(400);
     expect(response.body).toBe("400 - :playerId can't be empty");
     done();
   });
 
   it('?playerId=8471239', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=8471239');
+    const response = await request.get('/nhl/getPlayerFull?playerId=8471239');
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body.stats)).toBe(true);
     done();
   });
 
   it('?playerId=1', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=1');
+    const response = await request.get('/nhl/getPlayerFull?playerId=1');
     expect(response.status).toBe(404);
     expect(response.body).toBe('404 - Not Found');
     done();
   });
 
   it('?playerId=asdf', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=asdf');
+    const response = await request.get('/nhl/getPlayerFull?playerId=asdf');
     expect(response.status).toBe(400);
     expect(response.body).toBe('400 - :playerId needs to be a number');
     done();
   });
 
   it('?playerId=8471239&season=20162017', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=8471239&season=20162017');
+    const response = await request.get('/nhl/getPlayerFull?playerId=8471239&season=20162017');
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body.stats)).toBe(true);
     expect(response.body.stats[0].season).toBe('20162017');
@@ -282,7 +282,7 @@ describe('/nhl/getPlayer', () => {
   });
 
   it('?playerId=8471239&season=asdf', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=8471239&season=asdf');
+    const response = await request.get('/nhl/getPlayerFull?playerId=8471239&season=asdf');
     expect(response.status).toBe(400);
     expect(response.body).toBe(
       '400 - :season needs to follow proper format - yyyyyyyy (Example: 20192020)'
@@ -291,7 +291,7 @@ describe('/nhl/getPlayer', () => {
   });
 
   it('?playerId=8471239&season=10001001', async (done) => {
-    const response = await request.get('/nhl/getPlayer?playerId=8471239&season=20002001');
+    const response = await request.get('/nhl/getPlayerFull?playerId=8471239&season=20002001');
     expect(response.status).toBe(200);
     expect(response.body.stats.length).toBe(0);
     done();
