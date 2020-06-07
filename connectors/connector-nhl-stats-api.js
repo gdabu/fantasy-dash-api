@@ -175,18 +175,18 @@ const NHL_STATS_API = {
    * @param playerId (Required)
    * @param season
    */
-  getPlayer(playerId, season) {
+  getPlayerFull(playerId, season) {
     return new Promise((resolve, reject) => {
       let playerInfoPromise = this.getPlayerInfo(playerId);
       let playerStatsPromise = this.getPlayerStats(playerId, season);
 
       Promise.all([playerInfoPromise, playerStatsPromise])
         .then((result) => {
-          let playerDetails = result.map((playerDetail) => {
+          let playerFull = result.map((playerDetail) => {
             return playerDetail.payload;
           });
 
-          resolve({ status: 200, payload: Object.assign({}, ...playerDetails) });
+          resolve({ status: 200, payload: Object.assign({}, ...playerFull) });
         })
         .catch((error) => {
           reject(error);
@@ -217,7 +217,7 @@ const NHL_STATS_API = {
     allPlayers.forEach((player) => {
       fullPlayerPromise.push(
         new Promise((resolve, reject) => {
-          this.getPlayer(player.person.id, season)
+          this.getPlayerFull(player.person.id, season)
             .then((result) => {
               resolve(result);
             })
@@ -230,11 +230,11 @@ const NHL_STATS_API = {
 
     return await Promise.all(fullPlayerPromise)
       .then((result) => {
-        let playerDetails = result.map((playerDetail) => {
+        let playerFull = result.map((playerDetail) => {
           return playerDetail.payload;
         });
 
-        return { status: 200, payload: playerDetails };
+        return { status: 200, payload: playerFull };
       })
       .catch((error) => {
         return error;

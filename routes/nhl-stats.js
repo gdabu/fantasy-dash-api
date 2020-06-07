@@ -171,7 +171,7 @@ router.get('/getPlayerStats', async function (req, res) {
  * @queryparam playerId (Required)
  * @queryparam season
  */
-router.get('/getPlayer', async function (req, res) {
+router.get('/getPlayerFull', async function (req, res) {
   let { playerId, season } = req.query;
 
   if (playerId === undefined) {
@@ -192,7 +192,7 @@ router.get('/getPlayer', async function (req, res) {
     return;
   }
 
-  let { status, payload } = await NHL_STATS_API.getPlayer(playerId, season).catch((error) => {
+  let { status, payload } = await NHL_STATS_API.getPlayerFull(playerId, season).catch((error) => {
     return error;
   });
   res.status(status).json(payload);
