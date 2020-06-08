@@ -212,6 +212,25 @@ describe('/nhl/getPlayerStats', () => {
     expect(response.body.stats.length).toBe(1);
     done();
   });
+
+  it('/nhl/getPlayerStats?playerId=8480012&season=20192020&statType=goals', async (done) => {
+    const response = await request.get(
+      '/nhl/getPlayerStats?playerId=8480012&season=20192020&statType=goals'
+    );
+    expect(response.status).toBe(200);
+    expect(response.body.stats[0].season).toBe('20192020');
+    expect(response.body.stats[0].goals).toBe(27);
+    expect(Object.keys(response.body.stats[0]).length).toBe(2);
+    done();
+  });
+
+  it('/nhl/getPlayerStats?playerId=8478465&season=20192020', async (done) => {
+    const response = await request.get('/nhl/getPlayerStats?playerId=8478465&season=20192020');
+    expect(response.status).toBe(200);
+    expect(response.body.stats[0].season).toBe('20192020');
+    expect(Object.keys(response.body.stats[0]).length).toBe(1);
+    done();
+  });
 });
 
 describe('/nhl/getPlayerInfo', () => {
