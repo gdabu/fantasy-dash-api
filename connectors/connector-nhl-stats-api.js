@@ -146,7 +146,7 @@ const NHL_STATS_API = {
           let { stat } = stats.data.stats[0].splits[0];
 
           // if statType is specified return stats with the single statType
-          if (statType !== undefined) {
+          if (statType !== undefined && statType !== '') {
             stat = { [statType]: stat[statType] };
           }
 
