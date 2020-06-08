@@ -110,7 +110,7 @@ router.get('/getAllRosteredPlayers', async function (req, res) {
 
 /**
  * /getPlayerInfo
- * Gets the full info list of a specified player
+ * Gets the info of a specified player
  * @queryparam playerId (Required)
  */
 router.get('/getPlayerInfo', async function (req, res) {
