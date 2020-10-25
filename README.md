@@ -1,5 +1,7 @@
 # Fantasy Dash API
 
+Hosted here: https://fantasy-dash-api.herokuapp.com/
+
 A simple REST API for proxying data requests to the NHLs stats api
 
 API docs: https://documenter.getpostman.com/view/3158448/SztK2kQD?version=latest#6819adfd-d3aa-4cd1-8458-877dd96de4e2
