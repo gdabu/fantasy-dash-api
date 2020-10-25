@@ -3,11 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var dashNhlRouter = require('./routes/nhl-stats');
 
 var app = express();
+
+app.use(cors);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,12 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.all('/', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'GET');
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+
 
 app.use('/', indexRouter);
 app.use('/nhl', dashNhlRouter);
